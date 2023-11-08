@@ -35,14 +35,18 @@ func main() {
 		arr := res[i]
 		str := ""
 		for j := 0; j < len(arr); j++ {
-			if j == 0 {
-				str += string(arr[j])
+			if arr[0] == '+' {
+				// delete(res, i)
 			} else {
-				if arr[j] != '+' && arr[j] != '-' {
+				if j == 0 {
 					str += string(arr[j])
 				} else {
-					equation[i] = append(equation[i], str)
-					str = string(arr[j])
+					if arr[j] != '+' && arr[j] != '-' {
+						str += string(arr[j])
+					} else {
+						equation[i] = append(equation[i], str)
+						str = string(arr[j])
+					}
 				}
 			}
 
