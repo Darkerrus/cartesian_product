@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"strconv"
-
-	"github.com/schwarmco/go-cartesian-product"
 )
 
 func main() {
@@ -22,12 +20,13 @@ func main() {
 		}
 	}
 	arr[9] = append(arr[9], "0")
-	c := cartesian.Iter(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9])
+	c := cartesianProduct(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5], arr[6], arr[7], arr[8], arr[9])
 	var a int
-	for product := range c {
+	for _, v := range c {
+
 		a++
-		for i := 0; i < len(product); i++ {
-			str := fmt.Sprintf("%v", product[i])
+		for i := 0; i < len(v); i++ {
+			str := fmt.Sprintf("%v", v[i])
 			res[a] += str
 		}
 	}
@@ -67,4 +66,29 @@ func main() {
 		}
 	}
 
+}
+
+func cartesianProduct(arrs ...[]interface{}) [][]interface{} {
+	if len(arrs) == 0 {
+		return [][]interface{}{}
+	}
+	if len(arrs) == 1 {
+		result := [][]interface{}{}
+		for _, val := range arrs[0] {
+			result = append(result, []interface{}{val})
+		}
+		return result
+	}
+
+	head, tail := arrs[0], arrs[1:]
+	tailCartesian := cartesianProduct(tail...)
+
+	result := [][]interface{}{}
+	for _, val := range head {
+		for _, subArr := range tailCartesian {
+			result = append(result, append([]interface{}{val}, subArr...))
+		}
+	}
+
+	return result
 }
